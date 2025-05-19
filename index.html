@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cookie Clicker</title>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f7e9d7;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #gameContainer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        #cookieArea {
+            text-align: center;
+            flex: 2;
+        }
+        #cookie {
+            width: 200px;
+            height: 200px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+        }
+        #stats {
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        #upgrades {
+            flex: 1;
+            background-color: #fff;
+            padding: 20px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .upgrade {
+            padding: 10px;
+            margin: 10px 0;
+            background-color: #e0c68c;
+            border: 1px solid #bfa76f;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        .upgrade:hover {
+            background-color: #d4b179;
+        }
+        .upgrade:disabled {
+            background-color: #d4d4d4;
+            border-color: #bbb;
+            cursor: not-allowed;
+        }
+        h1 {
+            text-align: center;
+            color: #4d2600;
+            margin-top: 20px;
+        }
+        h2 {
+            color: #4d2600;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cookie Clicker</h1>
+    <div id="gameContainer">
+        <div id="cookieArea">
+            <img id="cookie" src="https://img.icons8.com/emoji/200/cookie-emoji.png" alt="Cookie">
+            <div id="stats">
+                <p>Cookies: <span id="cookieCount">0</span></p>
+                <p>Cookies Per Second: <span id="cps">0</span></p>
+            </div>
+        </div>
+        <div id="upgrades">
+            <h2>Upgrades</h2>
+            <button class="upgrade" id="upgradeClick" disabled>Upgrade Click (+1 per click) - Cost: 10 Cookies</button>
+            <button class="upgrade" id="autoClicker" disabled>Auto Clicker (+1 CPS) - Cost: 50 Cookies</button>
+            <button class="upgrade" id="megaClicker" disabled>Mega Clicker (+5 CPS) - Cost: 200 Cookies</button>
+            <button class="upgrade" id="goldenCookie" disabled>Golden Cookie Mode (+10 CPS) - Cost: 500 Cookies</button>
+            <button class="upgrade" id="cookieFactory" disabled>Cookie Factory (+50 CPS) - Cost: 2000 Cookies</button>
+        </div>
+    </div>
+
+    <script>
+        let cookieCount = 0;
+        let cookiesPerClick = 1;
+        let cookiesPerSecond = 0;
+
+        const cookie = document.getElementById("cookie");
+        const cookieCountDisplay = document.getElementById("cookieCount");
+        const cpsDisplay = document.getElementById("cps");
+        const upgradeClickButton = document.getElementById("upgradeClick");
+        const autoClickerButton = document.getElementById("autoClicker");
+        const megaClickerButton = document.getElementById("megaClicker");
+        const goldenCookieButton = document.getElementById("goldenCookie");
+        const cookieFactoryButton = document.getElementById("cookieFactory");
+
+        // Click cookie to earn cookies
+        cookie.addEventListener("click", () => {
+            cookieCount += cookiesPerClick;
+            updateUI();
+        });
+
+        // Upgrade: Increase cookies per click
+        upgradeClickButton.addEventListener("click", () => {
+            if (cookieCount >= 10) {
+                cookieCount -= 10;
+                cookiesPerClick++;
+                updateUI();
+            }
+        });
+
+        // Auto Clicker: +1 CPS
+        autoClickerButton.addEventListener("click", () => {
+            if (cookieCount >= 50) {
+                cookieCount -= 50;
+                cookiesPerSecond += 1;
+                updateUI();
+            }
+        });
+
+        // Mega Clicker: +5 CPS
+        megaClickerButton.addEventListener("click", () => {
+            if (cookieCount >= 200) {
+                cookieCount -= 200;
+                cookiesPerSecond += 5;
+                updateUI();
+            }
+        });
+
+        // Golden Cookie Mode: +10 CPS
+        goldenCookieButton.addEventListener("click", () => {
+            if (cookieCount >= 500) {
+                cookieCount -= 500;
+                cookiesPerSecond += 10;
+                updateUI();
+            }
+        });
+
+        // Cookie Factory: +50 CPS
+        cookieFactoryButton.addEventListener("click", () => {
+            if (cookieCount >= 2000) {
+                cookieCount -= 2000;
+                cookiesPerSecond += 50;
+                updateUI();
+            }
+        });
+
+        // Update UI
+        function updateUI() {
+            cookieCountDisplay.textContent = cookieCount;
+            cpsDisplay.textContent = cookiesPerSecond;
+            upgradeClickButton.disabled = cookieCount < 10;
+            autoClickerButton.disabled = cookieCount < 50;
+            megaClickerButton.disabled = cookieCount < 200;
+            goldenCookieButton.disabled = cookieCount < 500;
+            cookieFactoryButton.disabled = cookieCount < 2000;
+        }
+
+        // Auto-generate cookies per second
+        setInterval(() => {
+            cookieCount += cookiesPerSecond;
+            updateUI();
+        }, 1000);
+    </script>
+</body>
+</html>
